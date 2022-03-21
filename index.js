@@ -3,7 +3,6 @@ const Discord = require("discord.js")
 const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 
-
 var gameStart = false;
 var queue = [undefined, undefined]
 var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
@@ -23,6 +22,7 @@ client.once('ready', () => {
 
 client.on('messageCreate', message => {
     if(message.author.bot)return;
+
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
     connect4(message.channel, message.channel.content, message);
 })
