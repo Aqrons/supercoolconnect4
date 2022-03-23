@@ -4,7 +4,8 @@ const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 
 var gameStart = false;
-var queue = [undefined, undefined]
+var queue = [undefined, undefined] //Two users
+var turnRY = "red"; //Current user's turn (Red or Yellow)
 var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
@@ -22,13 +23,14 @@ client.once('ready', () => {
 
 client.on('messageCreate', message => {
     if(message.author.bot)return;
-
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
-    connect4(message.channel, message.channel.content, message);
+    gameStarter(message.channel, message.content, message);
+    runGame(message.content, message.channel);
+    console.log("")
 })
 
 
-function connect4(Channel, Content, Message){
+function gameStarter(Channel, Content, Message){
     if(gameStart === true){
         gameStart = undefined;
         Channel.send(`Queue is full! Game is starting...`)
@@ -41,6 +43,7 @@ function connect4(Channel, Content, Message){
 
 function queuing(authorTag, Channel, Content, Message)//message.author.tag, message.channel, message.content, message
 {
+        if(gameStart === undefined)return;
     if(queue[0] === undefined && Content === "-queue" ){
         queue[0] = authorTag
         Message.delete();
@@ -72,15 +75,82 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
             setTimeout(() => Message.delete(), 5000)
           })
     }
-
     if(queue[0] != undefined && queue[1] != undefined && gameStart === false){
-    Message.react(`6️⃣`);
-        // })
         gameStart = true
+        console.log("Game starting!")
+        turnRY = queue[0]
     }
     console.table(queue)
 }
 
+function runGame(msgContent,msgChannel){
+    var circle = 0;
+    if(gameStart != undefined) return;
+
+
+    if(turnRY === "Red"){
+        color = ":red_circle:"
+    } else {
+        color = ":yellow_circle:"
+    }
+
+        if(msgContent === "1"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][0] === "|<:blank:954191658403127307>" ){
+                    board[i][0] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }else if(msgContent === "2"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][1] === "|<:blank:954191658403127307>" ){
+                    board[i][1] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }else if(msgContent === "3"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][2] === "|<:blank:954191658403127307>" ){
+                    board[i][2] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }else if(msgContent === "4"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][3] === "|<:blank:954191658403127307>" ){
+                    board[i][3] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }else if(msgContent === "5"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][4] === "|<:blank:954191658403127307>" ){
+                    board[i][4] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }else if(msgContent === "6"){
+            for(var i = 6; i >= 0; i--){
+                if(board[i][5] === "|<:blank:954191658403127307>" ){
+                    board[i][5] = `|${color}`
+                    msgChannel.send(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`)
+                    break;
+                }
+            }
+        }
+
+        console.table(board)
+        if(turnRY === "Red"){
+            turnRY = "Yellow"
+        } else {
+            turnRY = "Red"
+        }
+}
 
 
 client.login(token);
