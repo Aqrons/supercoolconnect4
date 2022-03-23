@@ -2,10 +2,13 @@ const { channelMention } = require("@discordjs/builders")
 const Discord = require("discord.js")
 const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
-
 var gameStart = false;
 var queue = [undefined, undefined] //Two users
 var turnRY = "red"; //Current user's turn (Red or Yellow)
+var circle = undefined;//Current the color of the circle
+var pRed = undefined;// Player Red
+var pYellow = undefined;//Player Yellow
+
 var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
@@ -15,7 +18,7 @@ var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "
               [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
 
 
-
+// board[2][5] = "hi"
 
 client.once('ready', () => {
     console.log(`Online!`)
@@ -25,8 +28,7 @@ client.on('messageCreate', message => {
     if(message.author.bot)return;
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
     gameStarter(message.channel, message.content, message);
-    runGame(message.content, message.channel);
-    console.log("")
+    runGame(message.content, message.channel,message.author.tag);
 })
 
 
@@ -48,46 +50,33 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
         queue[0] = authorTag
         Message.delete();
         Channel.send(`${authorTag} has queued! 1/2`)
-        .then(Message => {
-            setTimeout(() => Message.delete(), 5000)
-          })
+
         console.log(`${queue[0]} has queued 1/2`)
     } else if(queue[0] != undefined && queue[1] === undefined && authorTag != queue[0] && Content === "-queue"){
         queue[1] = authorTag
         Message.delete();
         Channel.send(`${authorTag} has queued! 2/2`)
-        .then(Message => {
-            setTimeout(() => Message.delete(), 5000)
-          })
         console.log(`${queue[0]} has queued 2/2`)
     }
     if(authorTag === queue[0] && Content === "-dequeue"){
         queue[0] = queue[1];
         queue[1] = undefined;
         Channel.send("You have dequeued successfully!")
-        .then(Message => {
-            setTimeout(() => Message.delete(), 5000)
-          })
     } else if(authorTag === queue[1] && Content === "-dequeue"){
         queue[1] = undefined;
         Channel.send("You have dequeued successfully!")
-        .then(Message => {
-            setTimeout(() => Message.delete(), 5000)
-          })
     }
     if(queue[0] != undefined && queue[1] != undefined && gameStart === false){
         gameStart = true
         console.log("Game starting!")
-        turnRY = queue[0]
+        pRed = queue[0]
+        pYellow = queue[1]
     }
     console.table(queue)
 }
 
-function runGame(msgContent,msgChannel){
-    var circle = 0;
-    if(gameStart != undefined) return;
-
-
+function runGame(msgContent,msgChannel,msgAuthor){
+    if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
     if(turnRY === "Red"){
         color = ":red_circle:"
     } else {
@@ -145,6 +134,7 @@ function runGame(msgContent,msgChannel){
         }
 
         console.table(board)
+        checkWin();
         if(turnRY === "Red"){
             turnRY = "Yellow"
         } else {
@@ -152,5 +142,14 @@ function runGame(msgContent,msgChannel){
         }
 }
 
+function checkWin(){
+
+    //checks for diagnoal win for red
+    for(var i = 0; i < 6; i++){
+        if((board[i][5] === "|:red_circle:" && board[i][4] === "|:red_circle:" && board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:") || (board[i][4] === "|:red_circle:" && board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:" && board[i][1] === "|:red_circle:") || (board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:" && board[i][1] === "|:red_circle:" && board[i][0] === "|:red_circle:")){
+            console.log("MAJOR BAG ALERT")
+        }
+    }
+}
 
 client.login(token);
