@@ -18,7 +18,6 @@ var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "
               [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
 
 
-// board[2][5] = "hi"
 
 client.once('ready', () => {
     console.log(`Online!`)
@@ -28,7 +27,7 @@ client.on('messageCreate', message => {
     if(message.author.bot)return;
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
     gameStarter(message.channel, message.content, message);
-    runGame(message.content, message.channel,message.author.tag);
+    runGame(message.content, message.channel,message.author.tag,);
 })
 
 
@@ -153,6 +152,15 @@ function checkWin(){
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             console.log("MAJOR BAG ALERT 2")
+        }
+
+    }
+    for(var i = 0; i < 3; i++){
+        if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
+            console.log("MAJOR BAG ALRT 3")
+        }
+        if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
+            console.log("MAJOR BAG ALRT 4")
         }
     }
 }
