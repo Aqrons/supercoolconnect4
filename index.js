@@ -144,10 +144,15 @@ function runGame(msgContent,msgChannel,msgAuthor){
 
 function checkWin(){
 
-    //checks for diagnoal win for red
+
     for(var i = 0; i < 6; i++){
-        if((board[i][5] === "|:red_circle:" && board[i][4] === "|:red_circle:" && board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:") || (board[i][4] === "|:red_circle:" && board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:" && board[i][1] === "|:red_circle:") || (board[i][3] === "|:red_circle:" && board[i][2] === "|:red_circle:" && board[i][1] === "|:red_circle:" && board[i][0] === "|:red_circle:")){
+        //checks for horizontal win
+        if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             console.log("MAJOR BAG ALERT")
+        }
+        //check for vertical win
+        if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
+            console.log("MAJOR BAG ALERT 2")
         }
     }
 }
