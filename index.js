@@ -2,7 +2,7 @@ const { channelMention } = require("@discordjs/builders")
 const Discord = require("discord.js")
 const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
-var gameStart = false;
+var gameStart = false; //Checks if game has started
 var queue = [undefined, undefined] //Two users
 var turnRY = "red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
@@ -18,8 +18,6 @@ var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "
               [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
 
 
-// board[2][5] = "hi"
-
 client.once('ready', () => {
     console.log(`Online!`)
 })
@@ -27,12 +25,12 @@ client.once('ready', () => {
 client.on('messageCreate', message => {
     if(message.author.bot)return;
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
-    gameStarter(message.channel, message.content, message);
+    gameStarter(message.channel);
     runGame(message.content, message.channel,message.author.tag);
 })
 
 
-function gameStarter(Channel, Content, Message){
+function gameStarter(Channel){
     if(gameStart === true){
         gameStart = undefined;
         Channel.send(`Queue is full! Game is starting...`)
@@ -46,13 +44,13 @@ function gameStarter(Channel, Content, Message){
 function queuing(authorTag, Channel, Content, Message)//message.author.tag, message.channel, message.content, message
 {
         if(gameStart === undefined)return;
-    if(queue[0] === undefined && Content === "-queue" ){
+    if(queue[0] === undefined && (Content === "-queue" || Content === "-q")){
         queue[0] = authorTag
         Message.delete();
         Channel.send(`${authorTag} has queued! 1/2`)
 
         console.log(`${queue[0]} has queued 1/2`)
-    } else if(queue[0] != undefined && queue[1] === undefined && authorTag != queue[0] && Content === "-queue"){
+    } else if(queue[0] != undefined && queue[1] === undefined && authorTag != queue[0] && (Content === "-queue" || Content === "-q")){
         queue[1] = authorTag
         Message.delete();
         Channel.send(`${authorTag} has queued! 2/2`)
@@ -82,7 +80,13 @@ function runGame(msgContent,msgChannel,msgAuthor){
     } else {
         color = ":yellow_circle:"
     }
-
+        if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
+            msgChannel.send(`Red has quit, Yellow wins!`)
+            gameOver();
+        } else if ((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
+            msgChannel.send(`Yellow has quit, Red wins!`)
+            gameOver();
+        }
         if(msgContent === "1"){
             for(var i = 6; i >= 0; i--){
                 if(board[i][0] === "|<:blank:954191658403127307>" ){
@@ -149,12 +153,23 @@ function checkWin(){
         //checks for horizontal win
         if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             console.log("MAJOR BAG ALERT")
+            gameOver();
         }
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             console.log("MAJOR BAG ALERT 2")
+            gameOver();
         }
     }
 }
 
+function gameOver(){
+    gameStart = false;
+    queue = [undefined, undefined] //Two users
+    turnRY = "red"; //Current user's turn (Red or Yellow)
+    circle = undefined;//Current the color of the circle
+    pRed = undefined;// Player Red
+    pYellow = undefined;//Player Yellow
+    console.log("Game has been reset!")
+}
 client.login(token);
