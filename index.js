@@ -138,7 +138,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
         }
 
         console.table(board)
-        checkWin();
+        checkWin(msgChannel);
         if(turnRY === "Red"){
             turnRY = "Yellow"
         } else {
@@ -146,7 +146,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
         }
 }
 
-function checkWin(){
+function checkWin(msgChannel){
 
 
     for(var i = 0; i < 6; i++){
@@ -154,20 +154,24 @@ function checkWin(){
         if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             console.log("MAJOR BAG ALERT")
             gameOver();
+          msgChannel.send(`${color} wins`);
         }
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             console.log("MAJOR BAG ALERT 2")
             gameOver();
+          msgChannel.send(`${color} wins`);
         }
 
     }
     for(var i = 0; i < 3; i++){
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             console.log("MAJOR BAG ALRT 3")
+          msgChannel.send(`${color} wins`);
         }
         if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
             console.log("MAJOR BAG ALRT 4")
+          msgChannel.send(`${color} wins`);
         }
     }
 }
