@@ -4,7 +4,7 @@ const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 var gameStart = false; //Checks if game has started
 var queue = [undefined, undefined] //Two users
-var turnRY = "red"; //Current user's turn (Red or Yellow)
+var turnRY = "Red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
@@ -75,16 +75,17 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
 
 function runGame(msgContent,msgChannel,msgAuthor){
     if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
-    if(turnRY === "Red"){
-        color = ":red_circle:"
-    } else {
-        color = ":yellow_circle:"
-    }
+    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
+        if(turnRY === "Red"){
+            color = ":red_circle:"
+        } else {
+            color = ":yellow_circle:"
+        }
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
-            msgChannel.send(`Red has quit, Yellow wins!`)
+            msgChannel.send("Red has quit, Yellow wins!")
             gameOver();
-        } else if ((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
-            msgChannel.send(`Yellow has quit, Red wins!`)
+        }else if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pYellow){
+            msgChannel.send("Yellow has quit, Red wins!")
             gameOver();
         }
         if(msgContent === "1"){
@@ -136,7 +137,6 @@ function runGame(msgContent,msgChannel,msgAuthor){
                 }
             }
         }
-
         console.table(board)
         checkWin(msgChannel);
         if(turnRY === "Red"){
@@ -144,35 +144,45 @@ function runGame(msgContent,msgChannel,msgAuthor){
         } else {
             turnRY = "Red"
         }
+    }
 }
 
 function checkWin(msgChannel){
-
-
     for(var i = 0; i < 6; i++){
         //checks for horizontal win
         if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             console.log("MAJOR BAG ALERT")
+            msgChannel.send(`${color} Wins`)
             gameOver();
-          msgChannel.send(`${color} wins`);
+            break;
         }
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             console.log("MAJOR BAG ALERT 2")
+            msgChannel.send(`${color} Wins`)
             gameOver();
-          msgChannel.send(`${color} wins`);
+            break;
         }
-
     }
     for(var i = 0; i < 3; i++){
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             console.log("MAJOR BAG ALRT 3")
-          msgChannel.send(`${color} wins`);
+            msgChannel.send(`${color} Wins`)
+            gameOver();
+            break;
         }
         if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
             console.log("MAJOR BAG ALRT 4")
-          msgChannel.send(`${color} wins`);
+            msgChannel.send(`${color} Wins`)
+            gameOver();
+            break;
         }
+    }
+}
+
+function drawGame(msgChannel){
+    if((board[0][0] != pRed && pYellow) && (board[0][1] != pRed && pYellow) && (board[0][2] != pRed && pYellow) && (board[0][3] != pRed && pYellow) && (board[0][4] != pRed && pYellow) && (board[0][5] != pRed && pYellow) && (board[1][0] != pRed && pYellow) && (board[1][1] != pRed && pYellow) && (board[1][2] != pRed && pYellow) && (board[1][3] != pRed && pYellow) && (board[1][4] != pRed && pYellow) && (board[1][5] != pRed && pYellow)&& (board[2][0] != pRed && pYellow)&& (board[2][1] != pRed && pYellow)&& (board[2][2] != pRed && pYellow)&& (board[2][3] != pRed && pYellow)&& (board[2][4] != pRed && pYellow)&& (board[2][5] != pRed && pYellow)&& (board[3][0] != pRed && pYellow)&& (board[3][1] != pRed && pYellow)&& (board[3][2] != pRed && pYellow)&& (board[3][3] != pRed && pYellow)&& (board[3][4] != pRed && pYellow)&& (board[3][5] != pRed && pYellow)&& (board[4][0] != pRed && pYellow)&& (board[4][1] != pRed && pYellow)&& (board[4][2] != pRed && pYellow)&& (board[4][3] != pRed && pYellow)&& (board[4][4] != pRed && pYellow) && (board[4][5] != pRed && pYellow)&& (board[5][0] != pRed && pYellow)&& (board[5][1] != pRed && pYellow)&& (board[5][2] != pRed && pYellow) && (board[5][3] != pRed && pYellow) && (board[5][4] != pRed && pYellow) && (board[5][5] != pRed && pYellow)){
+        msgChannel.send("No one wins smh")
     }
 }
 
