@@ -16,7 +16,7 @@ var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
-
+var empty = 
 
 client.once('ready', () => {
     console.log(`Online!`)
@@ -164,7 +164,7 @@ function checkWin(msgChannel){
             break;
         }
     }
-    for(var i = 0; i < 3; i++){
+    for(var i = 0; i < 3; i++){//checks for \ win
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             console.log("MAJOR BAG ALRT 3")
             msgChannel.send(`${color} Wins`)
@@ -178,13 +178,11 @@ function checkWin(msgChannel){
             break;
         }
     }
-}
-
-function drawGame(msgChannel){
     if((board[0][0] != pRed && pYellow) && (board[0][1] != pRed && pYellow) && (board[0][2] != pRed && pYellow) && (board[0][3] != pRed && pYellow) && (board[0][4] != pRed && pYellow) && (board[0][5] != pRed && pYellow) && (board[1][0] != pRed && pYellow) && (board[1][1] != pRed && pYellow) && (board[1][2] != pRed && pYellow) && (board[1][3] != pRed && pYellow) && (board[1][4] != pRed && pYellow) && (board[1][5] != pRed && pYellow)&& (board[2][0] != pRed && pYellow)&& (board[2][1] != pRed && pYellow)&& (board[2][2] != pRed && pYellow)&& (board[2][3] != pRed && pYellow)&& (board[2][4] != pRed && pYellow)&& (board[2][5] != pRed && pYellow)&& (board[3][0] != pRed && pYellow)&& (board[3][1] != pRed && pYellow)&& (board[3][2] != pRed && pYellow)&& (board[3][3] != pRed && pYellow)&& (board[3][4] != pRed && pYellow)&& (board[3][5] != pRed && pYellow)&& (board[4][0] != pRed && pYellow)&& (board[4][1] != pRed && pYellow)&& (board[4][2] != pRed && pYellow)&& (board[4][3] != pRed && pYellow)&& (board[4][4] != pRed && pYellow) && (board[4][5] != pRed && pYellow)&& (board[5][0] != pRed && pYellow)&& (board[5][1] != pRed && pYellow)&& (board[5][2] != pRed && pYellow) && (board[5][3] != pRed && pYellow) && (board[5][4] != pRed && pYellow) && (board[5][5] != pRed && pYellow)){
         msgChannel.send("No one wins smh")
     }
 }
+
 
 function gameOver(){
     gameStart = false;
