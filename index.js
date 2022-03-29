@@ -4,7 +4,7 @@ const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 var gameStart = false; //Checks if game has started
 var queue = [undefined, undefined] //Two users
-var turnRY = "red"; //Current user's turn (Red or Yellow)
+var turnRY = "Red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
@@ -75,11 +75,12 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
 
 function runGame(msgContent,msgChannel,msgAuthor){
     if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
-    if(turnRY === "Red"){
-        color = ":red_circle:"
-    } else {
-        color = ":yellow_circle:"
-    }
+    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
+        if(turnRY === "Red"){
+            color = ":red_circle:"
+        } else {
+            color = ":yellow_circle:"
+        }
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
             msgChannel.send(`Red has quit, Yellow wins!`)
             gameOver();
@@ -144,6 +145,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
         } else {
             turnRY = "Red"
         }
+    }
 }
 
 function checkWin(){
@@ -165,9 +167,11 @@ function checkWin(){
     for(var i = 0; i < 3; i++){
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             console.log("MAJOR BAG ALRT 3")
+            gameOver();
         }
         if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
             console.log("MAJOR BAG ALRT 4")
+            gameOver();
         }
     }
 }
