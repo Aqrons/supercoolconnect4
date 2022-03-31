@@ -27,6 +27,7 @@ client.on('messageCreate', message => {
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
     gameStarter(message.channel);
     runGame(message.content, message.channel,message.author.tag);
+    
 })
 
 
@@ -75,18 +76,18 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
 
 function runGame(msgContent,msgChannel,msgAuthor){
     if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
-    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
-        if(turnRY === "Red"){
-            color = ":red_circle:"
-        } else {
-            color = ":yellow_circle:"
-        }
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
             msgChannel.send("Red has quit, Yellow wins!")
             gameOver();
         }else if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pYellow){
             msgChannel.send("Yellow has quit, Red wins!")
             gameOver();
+        }
+    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
+        if(turnRY === "Red"){
+            color = ":red_circle:"
+        } else {
+            color = ":yellow_circle:"
         }
         if(msgContent === "1"){
             for(var i = 6; i >= 0; i--){
