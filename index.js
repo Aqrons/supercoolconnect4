@@ -8,7 +8,7 @@ var turnRY = "Red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
-var empty = "|<:blank:954191658403127307>"
+var empty = "|<:blank:954191658403127307>"//The blank emoji displayed
 var board = [ [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
@@ -36,7 +36,7 @@ function gameStarter(Channel){
         gameStart = undefined;
         Channel.send(`Queue is full! Game is starting...`)
         .then(Message => {
-            setTimeout(() => Message.edit(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`), 1000)
+            setTimeout(() => Message.edit(`> ${board[0]}\n> ${board[1]}\n> ${board[2]}\n> ${board[3]}\n> ${board[4]}\n> ${board[5]}\n> ${board[6]}`), 100)
           })
     }
 }
