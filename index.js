@@ -15,11 +15,12 @@ var board = [ ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
               ["|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>", "|<:blank:954191658403127307>","|"],
-              [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
+              [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]]; 
 
 
 client.once('ready', () => {
     console.log(`Online!`)
+    client.user.setActivity("Connect Cuarto");
 })
 
 client.on('messageCreate', message => {
@@ -75,18 +76,18 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
 
 function runGame(msgContent,msgChannel,msgAuthor){
     if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
-    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
-        if(turnRY === "Red"){
-            color = ":red_circle:"
-        } else {
-            color = ":yellow_circle:"
-        }
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
             msgChannel.send("Red has quit, Yellow wins!")
             gameOver();
         }else if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pYellow){
             msgChannel.send("Yellow has quit, Red wins!")
             gameOver();
+        }
+    if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
+        if(turnRY === "Red"){
+            color = ":red_circle:"
+        } else {
+            color = ":yellow_circle:"
         }
         if(msgContent === "1"){
             for(var i = 6; i >= 0; i--){
