@@ -171,6 +171,8 @@ function checkWin(msgChannel){
     }
     if((board[0][0] != empty) && (board[0][1] != empty) && (board[0][2] != empty) && (board[0][3] != empty) && (board[0][4] != empty) && (board[0][5] != empty) && (board[1][0] != empty) && (board[1][1] != empty) && (board[1][2] != empty) && (board[1][3] != empty) && (board[1][4] != empty) && (board[1][5] != empty)&& (board[2][0] != empty)&& (board[2][1] != empty)&& (board[2][2] != empty)&& (board[2][3] != empty)&& (board[2][4] != empty)&& (board[2][5] != empty)&& (board[3][0] != empty)&& (board[3][1] != empty)&& (board[3][2] != empty)&& (board[3][3] != empty)&& (board[3][4] != empty)&& (board[3][5] != empty)&& (board[4][0] != empty)&& (board[4][1] != empty)&& (board[4][2] != empty)&& (board[4][3] != empty)&& (board[4][4] != empty) && (board[4][5] != empty)&& (board[5][0] != empty)&& (board[5][1] != empty)&& (board[5][2] != empty) && (board[5][3] !=empty) && (board[5][4] != empty) && (board[5][5] != empty)){
         msgChannel.send("Draw, Nobody wins!")
+        gameOver();
+        break;
     }
 }
 
