@@ -42,7 +42,7 @@ function gameStarter(Channel){
 }
 
 
-function queuing(authorTag, Channel, Content, Message)//message.author.tag, message.channel, message.content, message
+function queuing(authorTag, Channel, Content, Message)// queuing code (message.author.tag, message.channel, message.content, message)
 {
         if(gameStart === undefined)return;
     if(queue[0] === undefined && (Content === "-queue" || Content === "-q")){
@@ -70,7 +70,7 @@ function queuing(authorTag, Channel, Content, Message)//message.author.tag, mess
 }
 
 function runGame(msgContent,msgChannel,msgAuthor){
-    if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return;
+    if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return; //Surrender condition
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
             msgChannel.send("Red has quit, Yellow wins!")
             gameOver();
@@ -84,7 +84,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
         } else {
             color = ":yellow_circle:"
         }
-        if(msgContent === "1"){
+        if(msgContent === "1"){ //Places the correct circle in the first column
             for(var i = 6; i >= 0; i--){
                 if(board[i][0] === empty ){
                     board[i][0] = `|${color}`
@@ -92,7 +92,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "2"){
+        }else if(msgContent === "2"){ //Places the correct circle in the second column
             for(var i = 6; i >= 0; i--){
                 if(board[i][1] === empty ){
                     board[i][1] = `|${color}`
@@ -100,7 +100,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "3"){
+        }else if(msgContent === "3"){ //Places the correct circle in the third column
             for(var i = 6; i >= 0; i--){
                 if(board[i][2] === empty ){
                     board[i][2] = `|${color}`
@@ -108,7 +108,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "4"){
+        }else if(msgContent === "4"){ //Places the correct circle in the fourth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][3] === empty ){
                     board[i][3] = `|${color}`
@@ -116,7 +116,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "5"){
+        }else if(msgContent === "5"){ //Places the correct circle in the fifth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][4] === empty ){
                     board[i][4] = `|${color}`
@@ -124,7 +124,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "6"){
+        }else if(msgContent === "6"){ //Places the correct circle in the sixth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][5] === empty ){
                     board[i][5] = `|${color}`
@@ -133,7 +133,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                 }
             }
         }
-        checkWin(msgChannel);
+        checkWin(msgChannel); //Checks for who won
         if(turnRY === "Red"){
             turnRY = "Yellow"
         } else {
@@ -167,12 +167,14 @@ function checkWin(msgChannel){
             msgChannel.send(`${color} wins!`)
             gameOver();
             break;
+          //checks for / win
         }
     }
     if((board[0][0] != empty) && (board[0][1] != empty) && (board[0][2] != empty) && (board[0][3] != empty) && (board[0][4] != empty) && (board[0][5] != empty) && (board[1][0] != empty) && (board[1][1] != empty) && (board[1][2] != empty) && (board[1][3] != empty) && (board[1][4] != empty) && (board[1][5] != empty)&& (board[2][0] != empty)&& (board[2][1] != empty)&& (board[2][2] != empty)&& (board[2][3] != empty)&& (board[2][4] != empty)&& (board[2][5] != empty)&& (board[3][0] != empty)&& (board[3][1] != empty)&& (board[3][2] != empty)&& (board[3][3] != empty)&& (board[3][4] != empty)&& (board[3][5] != empty)&& (board[4][0] != empty)&& (board[4][1] != empty)&& (board[4][2] != empty)&& (board[4][3] != empty)&& (board[4][4] != empty) && (board[4][5] != empty)&& (board[5][0] != empty)&& (board[5][1] != empty)&& (board[5][2] != empty) && (board[5][3] !=empty) && (board[5][4] != empty) && (board[5][5] != empty)){
         msgChannel.send("Draw, Nobody wins!")
         gameOver();
         break;
+      //checks for a draw
     }
 }
 
