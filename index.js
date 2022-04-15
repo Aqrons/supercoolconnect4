@@ -148,14 +148,14 @@ function checkWin(msgChannel){
         //checks for horizontal win
         if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            var winner = (`${color}`)
+            winner = (`${color}`)
             gameOver();
             break;
         }
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            var winner = (`${color}`)
+            winner = (`${color}`)
             gameOver();
             break;
         }
@@ -163,13 +163,13 @@ function checkWin(msgChannel){
     for(var i = 0; i < 3; i++){//checks for \ win
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            var winner = (`${color}`)
+            winner = (`${color}`)
             gameOver();
             break;
         }
         if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            var winner = (`${color}`)
+            winner = (`${color}`)
             gameOver();
             break;
           //checks for / win
