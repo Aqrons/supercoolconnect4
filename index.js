@@ -8,6 +8,7 @@ var turnRY = "red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
+var winner = undefined;
 var empty = "|<:blank:954191658403127307>"//The blank emoji displayed
 var board = [ [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
