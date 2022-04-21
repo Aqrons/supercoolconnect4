@@ -4,10 +4,11 @@ const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 var gameStart = false; //Checks if game has started
 var queue = [undefined, undefined] //Two users
-var turnRY = "Red"; //Current user's turn (Red or Yellow)
+var turnRY = "red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
+var winner = undefined;
 var empty = "|<:blank:954191658403127307>"//The blank emoji displayed
 var board = [ [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
@@ -27,7 +28,6 @@ client.on('messageCreate', message => {
     queuing(message.author.tag, message.channel, message.content, message) //Function controlls queue, 
     gameStarter(message.channel);
     runGame(message.content, message.channel,message.author.tag);
-    
 })
 
 
@@ -42,7 +42,7 @@ function gameStarter(Channel){
 }
 
 
-function queuing(authorTag, Channel, Content, Message)// queuing code (message.author.tag, message.channel, message.content, message)
+function queuing(authorTag, Channel, Content, Message, winner)// queuing code (message.author.tag, message.channel, message.content, message)
 {
         if(gameStart === undefined)return;
     if(queue[0] === undefined && (Content === "-queue" || Content === "-q")){
@@ -62,12 +62,20 @@ function queuing(authorTag, Channel, Content, Message)// queuing code (message.a
         queue[1] = undefined;
         Channel.send("You have dequeued successfully!")
     }
-    if(queue[0] != undefined && queue[1] != undefined && gameStart === false){
-        gameStart = true
+    if(queue[0] != undefined && queue[1] != undefined && gameStart === false && winner === undefined || winner === queue[0]){
         pRed = queue[0]
         pYellow = queue[1]
+        gameStart = true;
+    }
+    if(queue[0] != undefined && queue[1] != undefined && winner === queue[1] && gameStart === false){
+        pYellow = queue[0]
+        pRed = queue[1]
+        gameStart = true;
+
     }
 }
+
+
 
 function runGame(msgContent,msgChannel,msgAuthor){
     if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return; //Surrender condition
@@ -133,7 +141,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                 }
             }
         }
-        checkWin(msgChannel); //Checks for who won
+        checkWin(msgChannel); //Check turn
         if(turnRY === "Red"){
             turnRY = "Yellow"
         } else {
@@ -141,31 +149,35 @@ function runGame(msgContent,msgChannel,msgAuthor){
         }
     }
 }
-
-function checkWin(msgChannel){
+function checkWin(msgChannel,authorTag){
     for(var i = 0; i < 6; i++){
         //checks for horizontal win
         if((board[i][5] === `|${color}` && board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] === `|${color}`) || (board[i][4] === `|${color}` && board[i][3] === `|${color}` && board[i][2] ===`|${color}` && board[i][1] === `|${color}`) || (board[i][3] === `|${color}` && board[i][2] === `|${color}` && board[i][1] === `|${color}` && board[i][0] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            gameOver();
+            winner = (`${authorTag}`)
+            gameOver(winner);
             break;
         }
         //check for vertical win
         if((board[5][i] === `|${color}` && board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}`) || (board[4][i] === `|${color}` && board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}`) || (board[3][i] === `|${color}` && board[2][i] === `|${color}` && board[1][i] === `|${color}` && board[0][i] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            gameOver();
+            winner = (`${authorTag}`)
+            gameOver(winner);
             break;
+            
         }
     }
     for(var i = 0; i < 3; i++){//checks for \ win
         if((board[5][i + 0] === `|${color}` && board[4][i + 1] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 3] === `|${color}`) || (board[4][i + 0] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 3] === `|${color}`) || (board[3][i + 0] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 2] === `|${color}` && board[0][i + 3] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            gameOver();
+            winner = (`${authorTag}`)
+            gameOver(winner);
             break;
         }
         if((board[5][i + 3] === `|${color}` && board[4][i + 2] === `|${color}` && board[3][i + 1] === `|${color}` && board[2][i + 0] === `|${color}`) || (board[4][i + 3] === `|${color}` && board[3][i + 2] === `|${color}` && board[2][i + 1] === `|${color}` && board[1][i + 0] === `|${color}`) || (board[3][i + 3] === `|${color}` && board[2][i + 2] === `|${color}` && board[1][i + 1] === `|${color}` && board[0][i + 0] === `|${color}`)){
             msgChannel.send(`${color} wins!`)
-            gameOver();
+            winner = (`${authorTag}`)
+            gameOver(winner);
             break;
           //checks for / win
         }
@@ -173,19 +185,18 @@ function checkWin(msgChannel){
     if((board[0][0] != empty) && (board[0][1] != empty) && (board[0][2] != empty) && (board[0][3] != empty) && (board[0][4] != empty) && (board[0][5] != empty) && (board[1][0] != empty) && (board[1][1] != empty) && (board[1][2] != empty) && (board[1][3] != empty) && (board[1][4] != empty) && (board[1][5] != empty)&& (board[2][0] != empty)&& (board[2][1] != empty)&& (board[2][2] != empty)&& (board[2][3] != empty)&& (board[2][4] != empty)&& (board[2][5] != empty)&& (board[3][0] != empty)&& (board[3][1] != empty)&& (board[3][2] != empty)&& (board[3][3] != empty)&& (board[3][4] != empty)&& (board[3][5] != empty)&& (board[4][0] != empty)&& (board[4][1] != empty)&& (board[4][2] != empty)&& (board[4][3] != empty)&& (board[4][4] != empty) && (board[4][5] != empty)&& (board[5][0] != empty)&& (board[5][1] != empty)&& (board[5][2] != empty) && (board[5][3] !=empty) && (board[5][4] != empty) && (board[5][5] != empty)){
         msgChannel.send("Draw, Nobody wins!")
         gameOver();
-        break;
       //checks for a draw
     }
 }
 
-
-function gameOver(){
+function gameOver(winner,authorTag){
     gameStart = false;
     queue = [undefined, undefined] //Two users
-    turnRY = "red"; //Current user's turn (Red or Yellow)
+    turnRY = undefined; //Current user's turn (Red or Yellow)
     circle = undefined;//Current the color of the circle
     pRed = undefined;// Player Red
     pYellow = undefined;//Player Yellow
+    winner = (`${authorTag}`);
     board = [ [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
