@@ -4,7 +4,7 @@ const client = new Discord.Client({intents: 32767})
 const { token } = require('./config.json');
 var gameStart = false; //Checks if game has started
 var queue = [undefined, undefined] //Two users
-var turnRY = "red"; //Current user's turn (Red or Yellow)
+var turnRY = "Red"; //Current user's turn (Red or Yellow)
 var circle = undefined;//Current the color of the circle
 var pRed = undefined;// Player Red
 var pYellow = undefined;//Player Yellow
@@ -92,7 +92,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
         } else {
             color = ":yellow_circle:"
         }
-        if(msgContent === "1"){ //Places the correct circle in the first column
+        if(msgContent === "1" && gameStart === undefined){ //Places the correct circle in the first column
             for(var i = 6; i >= 0; i--){
                 if(board[i][0] === empty ){
                     board[i][0] = `|${color}`
@@ -100,7 +100,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "2"){ //Places the correct circle in the second column
+        }else if(msgContent === "2"&& gameStart === undefined){ //Places the correct circle in the second column
             for(var i = 6; i >= 0; i--){
                 if(board[i][1] === empty ){
                     board[i][1] = `|${color}`
@@ -108,7 +108,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "3"){ //Places the correct circle in the third column
+        }else if(msgContent === "3"&& gameStart === undefined){ //Places the correct circle in the third column
             for(var i = 6; i >= 0; i--){
                 if(board[i][2] === empty ){
                     board[i][2] = `|${color}`
@@ -116,7 +116,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "4"){ //Places the correct circle in the fourth column
+        }else if(msgContent === "4"&& gameStart === undefined){ //Places the correct circle in the fourth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][3] === empty ){
                     board[i][3] = `|${color}`
@@ -124,7 +124,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "5"){ //Places the correct circle in the fifth column
+        }else if(msgContent === "5"&& gameStart === undefined){ //Places the correct circle in the fifth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][4] === empty ){
                     board[i][4] = `|${color}`
@@ -132,7 +132,7 @@ function runGame(msgContent,msgChannel,msgAuthor){
                     break;
                 }
             }
-        }else if(msgContent === "6"){ //Places the correct circle in the sixth column
+        }else if(msgContent === "6"&& gameStart === undefined){ //Places the correct circle in the sixth column
             for(var i = 6; i >= 0; i--){
                 if(board[i][5] === empty ){
                     board[i][5] = `|${color}`
