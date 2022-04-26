@@ -62,7 +62,7 @@ function queuing(authorTag, Channel, Content, Message, winner)// queuing code (m
         queue[1] = undefined;
         Channel.send("You have dequeued successfully!")
     }
-    if(queue[0] != undefined && queue[1] != undefined && gameStart === false && winner === undefined || winner === queue[0]){
+    if(queue[0] != undefined && queue[1] != undefined && gameStart === false && (winner === undefined || winner === queue[0]))F{
         pRed = queue[0]
         pYellow = queue[1]
         gameStart = true;
@@ -78,7 +78,8 @@ function queuing(authorTag, Channel, Content, Message, winner)// queuing code (m
 
 
 function runGame(msgContent,msgChannel,msgAuthor){
-    if((gameStart != undefined) || (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return; //Surrender condition
+    if((gameStart != undefined) 
+       (turnRY === "Red" && msgAuthor === pYellow) || (turnRY === "Yellow" && msgAuthor === pRed)) return; //Surrender condition
         if((msgContent === "-ff" || msgContent === "-quit") && msgAuthor === pRed){
             msgChannel.send("Red has quit, Yellow wins!")
             gameOver();
