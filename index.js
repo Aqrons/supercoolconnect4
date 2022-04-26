@@ -205,5 +205,7 @@ function gameOver(winner,authorTag){
               [empty, empty, empty, empty, empty, empty,"|"],
               [empty, empty, empty, empty, empty, empty,"|"],
               [" 1️⃣","  2️⃣"," 3️⃣"," 4️⃣"," 5️⃣", " 6️⃣"]];
+  if(msgContent === "1" || msgContent === "2" || msgContent === "3" || msgContent === "4" || msgContent === "5" || msgContent === "6"){
+    break;
 }
 client.login(token);
