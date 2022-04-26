@@ -62,7 +62,7 @@ function queuing(authorTag, Channel, Content, Message, winner)// queuing code (m
         queue[1] = undefined;
         Channel.send("You have dequeued successfully!")
     }
-    if(queue[0] != undefined && queue[1] != undefined && gameStart === false && (winner === undefined || winner === queue[0]))F{
+    if(queue[0] != undefined && queue[1] != undefined && gameStart === false && (winner === undefined || winner === queue[0])){
         pRed = queue[0]
         pYellow = queue[1]
         gameStart = true;
